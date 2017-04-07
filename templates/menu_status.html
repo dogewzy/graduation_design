@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+
+
+<title>菜单状态</title>
+{% block normal %}
+<table class="table">
+    <thead>
+      <tr>
+        <th>菜名</th>
+        <th>状态</th>
+          <th>备注</th>
+      </tr>
+    </thead>
+
+    <tbody>
+    {% for food in food_list %}
+      <tr>
+        <td>{{ food}}</td>
+        <td>{{ food_status[food] }}</td>
+      </tr>
+     {% end %}
+    </tbody>
+  </table>
+
+<div class="btn-group">
+  <button type="button" class="btn btn-primary" id="add">补点</button>
+  <button type="button" class="btn btn-primary" id="ret">退点</button>
+  <button type="button" class="btn btn-primary" id="flush">刷新</button>
+</div>
+<div id="add_food" hidden>
+    <p>选择要补点的菜</p>
+    <ul>
+        {% for food in total_food %}
+        <li><input type="checkbox" id="ad"><span>{{ food }}</span></li>
+        {% end %}
+    </ul>
+</div>
+<div id="ret_food" hidden>
+    <p>选择要退的菜</p>
+    <ul>
+        {% for food in can_ret_food %}
+        <li><input type="checkbox" id="re"><span>{{ food }}</span></li>
+        {% end %}
+    </ul>
+</div>
+
+<script>
+$("#add").click(function(){
+  $("#add_food").toggle();
+});
+$("#ret").click(function(){
+  $("#ret_food").toggle();
+});
+$("#flush").click(function(){
+
+});
+</script>
+
+{% end %}

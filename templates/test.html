@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" action="/test">
+    <ul>
+        {% for food in items %}
+
+        <li>{{ food }}  </li>
+        <input type="checkbox" value="12" name="sada">
+        {% end %}
+    </ul>
+    <input type="submit">
+</form>
+</body>
+</html>

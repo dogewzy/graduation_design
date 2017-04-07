@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu</title>
+    <script src="http://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+<span>桌号</span><input type="text" name="桌号" id="table">
+<ul>
+{% for food in items %}
+<li><input type="checkbox" id="food"><span>{{ food }}</span></li>
+{% end %}
+</ul>
+<input type="submit" id="submit" value="下单">
+
+
+
+
+<script>
+
+$(document).ready(function(){
+
+
+  $("#submit").click(function(){
+    var chkIds = "";
+    $("input:checkbox:checked").each(function(i){
+        <!--alert($(this).next().html())-->
+        chkIds += $(this).next().html() + ",";
+    });
+    data = {};
+    data['food']=chkIds;
+    data['table']=$("#table").val()
+    <!--$.post('/menu',JSON.stringify(data));-->
+
+    $.ajax({
+        type : "post",
+        dataType : "json",
+        data : JSON.stringify(data),
+        url : '/menu',
+
+        success : function(){
+
+        },
+        error : function() {
+       window.location.href='http://127.0.0.1:8080/menustatus/'+data['table'].toString();
+        }
+    });
+  });
+
+
+});
+</script>
+</body>
+</html>
