@@ -1,24 +1,241 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap-grid.css">
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block normal %}
 
 <div class="container">
-  <h2>Button Group</h2>
-  <p>The .btn-group class creates a button group:</p>
-  <div class="btn-group">
-    <button type="button" class="btn btn-primary">Apple</button>
-    <button type="button" class="btn btn-primary">Samsung</button>
-    <button type="button" class="btn btn-primary">Sony</button>
+  <h2>后台管理系统</h2>
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">菜品管理</div>
+      <div class="panel-body">
+            <table class="table">
+    <thead>
+      <tr>
+        <th>菜名</th>
+        <th>价格</th>
+        <th></th>
+          <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for foo in food %}
+      <tr>
+        <td>{{ foo.name }}</td>
+        <td>{{ foo.price }}</td>
+        <td><label>新价格</label><input type="text"><button class="update_food">修改价格</button></td>
+          <td><button class="delete_food">删除</button></td>
+      </tr>
+    {% end %}
+
+    <form>
+        <label>菜名</label><input type="text" id="fn">
+        <label>价格</label><input type="text" id="fv">
+        <button id="add_food" type="submit">添加</button>
+    </form>
+
+    </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <div class="panel panel-primary" hidden>
+      <div class="panel-heading">菜单管理</div>
+      <div class="panel-body">
+
+
+    <form>
+        <button id="add_menu">添加</button>
+    </form>
+          <form>
+        <label>桌号</label><input type="text" id="zh2">
+        <button id="search_menu" type="submit">查询</button>
+    </form>
+
+
+      </div>
+    </div>
+
+    <div class="panel panel-success">
+      <div class="panel-heading">人员管理</div>
+      <div class="panel-body">
+          <table class="table">
+    <thead>
+      <tr>
+        <th>姓名</th>
+        <th>职位</th>
+        <th>账号</th>
+          <th>密码</th>
+          <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for p in people %}
+      <tr>
+        <td>{{ p.name }}</td>
+        <td>{{ p.role }}</td>
+        <td>{{ p.account }}</td>
+          <td>{{ p.password }}</td>
+          <td>修改密码<input type="text"><button class="xx">确定修改</button></td>
+          <td><button class="tt">删除</button></td>
+      </tr>
+    {% end %}
+
+    <form>
+        <label>姓名</label><input type="text" id="a">
+        <label>职位</label><input type="text" id="b">
+        <label>账号</label><input type="text" id="c">
+        <label>密码</label><input type="text" id="d">
+        <button id="add_people" type="submit">添加</button>
+    </form>
+
+    </tbody>
+          </table>
+      </div>
+    </div>
+
   </div>
 </div>
 
-</body>
-</html>
+
+
+<script type="text/javascript">
+$("#add_food").click(function(){
+    data={
+    "action":"add_food",
+    "name":$("#fn").val(),
+    "price":$("#fv").val()
+    },
+  $.ajax({
+        type : "post",
+        dataType : "json",
+        data : JSON.stringify(data),
+        url : '/admin',
+        success : function(msg){
+            alert(msg['msg']);
+        },
+        error : function() {
+            alert('wrong');
+        }
+    });
+});
+
+$("button.delete_food").click(function(event){
+    data={
+    "action":"delete_food",
+    "name":$(event.target).parent().prev().prev().prev().html()
+    },
+  $.ajax({
+        type : "post",
+        dataType : "json",
+        data : JSON.stringify(data),
+        url : '/admin',
+        success : function(msg){
+            alert(msg['msg']);
+        },
+        error : function() {
+             location.reload();
+        }
+    });
+});
+$("button.update_food").click(function(event){
+    data={
+    "action":"update_food",
+    "name":$(event.target).parent().prev().prev().html(),
+    "price":$(event.target).prev().val()
+    },
+  $.ajax({
+        type : "post",
+        dataType : "json",
+        data : JSON.stringify(data),
+        url : '/admin',
+        success : function(msg){
+            alert(msg['msg']);
+        },
+        error : function() {
+        location.reload();
+
+        }
+    });
+});
+
+</script>
+
+<script>
+$("#add_menu").click(function(){
+  $.ajax({
+        type : "get",
+        url : '/',
+        success : function(){
+        alert('wrssssong');
+        },
+        error : function() {
+            alert('wrong');
+        }
+    });
+});
+$("#search_menu").click(function(){
+
+});
+</script>
+<script>
+$("#add_people").click(function(){
+    data={
+    "action":"add_people",
+    "name":$("#a").val(),
+    "account":$("#c").val(),
+    "password":$("#d").val(),
+    "role":$("#b").val()
+    },
+  $.ajax({
+        type : "post",
+        dataType : "json",
+        data : JSON.stringify(data),
+        url : '/admin',
+        success : function(msg){
+            alert(msg['msg']);
+        },
+        error : function() {
+            alert('wrong');
+        }
+    });
+});
+$("button.xx").click(function(event){
+    data={
+    "action":"update_people",
+    "name": $(event.target).parent().prev().prev().prev().prev().html(),
+    "password":$(event.target).prev().val()
+    },
+  $.ajax({
+        type : "post",
+        dataType : "json",
+        data : JSON.stringify(data),
+        url : '/admin',
+        success : function(msg){
+            alert(msg['msg']);
+        },
+        error : function() {
+             location.reload();
+        }
+    });
+});
+$("button.tt").click(function(event){
+    data={
+    "action":"delete_people",
+    "name": $(event.target).parent().prev().prev().prev().prev().prev().html(),
+    },
+  $.ajax({
+        type : "post",
+        dataType : "json",
+        data : JSON.stringify(data),
+        url : '/admin',
+        success : function(msg){
+ location.reload();
+        },
+        error : function() {
+ location.reload();
+        }
+    });
+});
+</script>
+{% end %}

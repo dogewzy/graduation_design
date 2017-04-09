@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block normal %}
+
+
+
+<div class="container">
+  <h2>收银系统</h2>
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">客人签到,获取随机桌号</div>
+      <div class="panel-body">
+          <button type="button" class="btn btn-info" id="table_num"></button>
+      </div>
+    </div>
+
+    <div class="panel panel-primary">
+      <div class="panel-heading">客人结账</div>
+
+      <div class="panel-body">
+          <label>需要结账的桌号</label>
+          <input type="text" id="to_be_add">
+      </div>
+        <button id="to_be">结账</button>
+    </div>
+    </div>
+</div>
+
+
+
+<script>
+$("#table_num").click(function(){
+    data={
+    "action":"get_num",
+
+    },
+  $.ajax({
+        type : "post",
+        dataType : "json",
+        data : JSON.stringify(data),
+        url : '/cashier',
+        success : function(msg){
+alert(msg['msg'])
+        },
+        error : function() {
+alert(msg['msg'])
+        }
+    });
+});
+
+$("#to_be").click(function(){
+    data={"action":"to_be_finish",    "table":$("#to_be_add").val()},
+  $.ajax({
+        type : "post",
+        dataType : "json",
+        data : JSON.stringify(data),
+        url : '/cashier',
+        success : function(msg){
+           alert('结账成功');
+        },
+        error : function(msg) {
+        alert('结账成功');
+        }
+    });
+});
+
+</script>
+
+{% end %}

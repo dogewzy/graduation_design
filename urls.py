@@ -5,4 +5,7 @@ url_patterns = [
     (r"/menu", AddMenuHandler),
     (r"/menustatus/(?P<table>[\d]+)", MenuStatus),
     (r"/test", TestHandler),
+    (r"/cashier", AllocationHandler),
+    (r"/admin", AdminHandler),
+    (r"/chef", ChefHandler),
 ]

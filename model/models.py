@@ -3,7 +3,8 @@
 import datetime
 from sqlalchemy import Column
 from sqlalchemy.types import Unicode, DateTime, Integer
-from .db import Model
+from .db import Model, db_session
+
 
 
 class People(Model):
@@ -33,6 +34,14 @@ class Menu(Model):
     def __repr__(self):
         return self.table_num
 
+    def total_fee(self):
+        food_list = self.food.split(',')[0:-1]
+        fee = 0
+        for food in food_list:
+            fee += db_session.query(Food).filter(Food.name == food).first().price
+        return fee
+
+
 
 class Food(Model):
     __tablename__ = 'food'
@@ -43,7 +52,7 @@ class Food(Model):
     status = Column(Unicode(64), default=u'0')
     menu_id = Column(Unicode(70), default=u'')
     price = Column(Integer)
-    type = Column(Unicode(70))
+    type = Column(Unicode(70),default=u'')
 
     def __repr__(self):
         return str(self.name) + str(self.status)

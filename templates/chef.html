@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+
+
+<title>菜单状态 </title>
+{% block normal %}
+<table class="table">
+    <thead>
+      <tr>
+        <th>座位</th>
+        <th>未完成的菜</th>
+          <th>上传完成的菜</th>
+      </tr>
+    </thead>
+
+    <tbody>
+    {% for table in t %}
+      <tr>
+        <td>{{ table }}</td>
+        <td>{{ t[table] }}</td>
+          <td><input type="text"><button class="update_food">这些菜已经做好</button></td>
+      </tr>
+     {% end %}
+    </tbody>
+  </table>
+
+
+
+<script>
+$("button.update_food").click(function(event){
+    data={
+    "action":"update_food",
+    "table": $(event.target).parent().prev().prev().html(),
+    "food":$(event.target).prev().val()
+    },
+  $.ajax({
+        type : "post",
+        dataType : "json",
+        data : JSON.stringify(data),
+        url : '/chef',
+        success : function(msg){
+location.reload();
+
+        },
+        error : function() {
+        location.reload();
+
+        }
+    });
+});
+
+</script>
+
+{% end %}

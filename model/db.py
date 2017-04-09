@@ -11,7 +11,6 @@ import redis
 engine = create_engine(
         'mysql+pymysql://root:330625@127.0.0.1:3306/design?charset=utf8mb4',
         convert_unicode=True,
-        echo=True,
         poolclass=NullPool
 )
 

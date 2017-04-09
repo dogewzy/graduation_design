@@ -2,21 +2,21 @@
 
 
 
-<title>菜单状态</title>
+<title>菜单状态 </title>
 {% block normal %}
+<p>座号：{{ table }}</p>
 <table class="table">
     <thead>
       <tr>
         <th>菜名</th>
         <th>状态</th>
-          <th>备注</th>
       </tr>
     </thead>
 
     <tbody>
     {% for food in food_list %}
       <tr>
-        <td>{{ food}}</td>
+        <td>{{ food }}</td>
         <td>{{ food_status[food] }}</td>
       </tr>
      {% end %}
@@ -29,20 +29,16 @@
   <button type="button" class="btn btn-primary" id="flush">刷新</button>
 </div>
 <div id="add_food" hidden>
-    <p>选择要补点的菜</p>
-    <ul>
-        {% for food in total_food %}
-        <li><input type="checkbox" id="ad"><span>{{ food }}</span></li>
-        {% end %}
-    </ul>
+    <p>输入要补点的菜</p>
+    <input type="text">
+    <button id="bu"></button>
+
 </div>
 <div id="ret_food" hidden>
-    <p>选择要退的菜</p>
-    <ul>
-        {% for food in can_ret_food %}
-        <li><input type="checkbox" id="re"><span>{{ food }}</span></li>
-        {% end %}
-    </ul>
+    <p>输入要退的菜</p>
+    <input type="text">
+    <button id="tui"></button>
+
 </div>
 
 <script>
@@ -53,7 +49,45 @@ $("#ret").click(function(){
   $("#ret_food").toggle();
 });
 $("#flush").click(function(){
-
+location.reload();
+});
+$("#bu").click(function(event){
+    data={
+    "action":"bu",
+    "food":$(event.target).prev().val(),
+    "table":{{ table }}
+    },
+  $.ajax({
+        type : "post",
+        dataType : "json",
+        data : JSON.stringify(data),
+        url : 'http://127.0.0.1:8080/menustatus/'+ {{ table }},
+        success : function(msg){
+            location.reload();
+        },
+        error : function() {
+            <!--alert('wrong');-->
+        }
+    });
+});
+$("#tui").click(function(event){
+    data={
+    "action":"tui",
+    "food":$(event.target).prev().val(),
+    "table":{{ table }}
+    },
+  $.ajax({
+        type : "post",
+        dataType : "json",
+        data : JSON.stringify(data),
+        url : 'http://127.0.0.1:8080/menustatus/'+ {{ table }},
+        success : function(msg){
+            location.reload();
+        },
+        error : function() {
+            <!--alert('wrong');-->
+        }
+    });
 });
 </script>
 
