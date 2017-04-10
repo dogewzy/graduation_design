@@ -56,10 +56,10 @@ $("#to_be").click(function(){
         data : JSON.stringify(data),
         url : '/cashier',
         success : function(msg){
-           alert('结账成功');
+           alert(msg['msg']);
         },
         error : function(msg) {
-        alert('结账成功');
+        alert(msg['msg']);
         }
     });
 });

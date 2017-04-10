@@ -21,18 +21,19 @@ class AllocationHandler(web.RequestHandler):
                 self.write(escape.json_encode(data))
             elif num:
                 data = {'msg': str(num)}
+                redis_connect.sadd('table_num', num)
                 self.write(escape.json_encode(data))
         if response['action'] == 'to_be_finish':
             table = response['table']
             redis_connect.sadd('table_client', int(table))
 
             try:
-                redis_connect.lrem('table_num', 0, table)
+                redis_connect.srem('table_num', int(table))
                 redis_connect.ltrim(table,2,1)
             except:
                 pass
             menu = db_session.query(Menu).filter(Menu.table_num == int(table)).first()
             print(menu.food)
             total_fee = menu.total_fee()
-            data = {'msg': '您好，总额为'+str(total_fee)}
+            data = {'msg': '您好，总额为'+str(total_fee)+'\n菜品:\n'+str(menu.food)}
             self.write(escape.json_encode(data))

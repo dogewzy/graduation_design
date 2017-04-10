@@ -19,9 +19,10 @@ class ChefHandler(web.RequestHandler):
 
     def post(self, *args, **kwargs):
         response = json.loads(self.request.body.decode('utf-8'))
+        print(response)
         if response['action'] == 'update_food':
             table = response['table']
             food_list = response['food'].split(',')[0:-1]
             for i in food_list:
-                redis_connect.lrem(table, 0, i)
+                redis_connect.lrem(table, 1, i)
         self.write('success')

@@ -28,17 +28,20 @@ class AddMenuHandler(web.RequestHandler):
 
 class MenuStatus(web.RequestHandler):
     def get(self, table):
-        food_status = {}
-        menu = db_session.query(Menu).filter(Menu.table_num == table).first()
+        if bytes(table, 'utf-8') not in redis_connect.smembers('table_num'):
+            self.render('menu_status.html', food_list='', food_status='', table=table)
+        else:
+            food_status = {}
+            menu = db_session.query(Menu).filter(Menu.table_num == table).first()
 
-        food_list = menu.food.split(',')[0:-1]
-        for i in redis_connect.lrange(table, 0, -1):
-            i = i.decode('utf-8')
-            food_status[i] = '未完成'
-        for each in food_list:
-            if each not in food_status:
-                food_status[each] = '已完成'
-        self.render('menu_status.html', food_list=food_list, food_status=food_status, table=table)
+            food_list = menu.food.split(',')[0:-1]
+            for i in redis_connect.lrange(table, 0, -1):
+                i = i.decode('utf-8')
+                food_status[i] = '未完成'
+            for each in food_list:
+                if each not in food_status:
+                    food_status[each] = '已完成'
+            self.render('menu_status.html', food_list=food_list, food_status=food_status, table=table)
 
     def post(self, *args, **kwargs):
         response = json.loads(self.request.body.decode('utf-8'))
@@ -58,9 +61,9 @@ class MenuStatus(web.RequestHandler):
             redis_data = []
             for i in redis_connect.lrange(table, 0, -1):
                 redis_data.append(i.decode('utf-8'))
-            print(origin_food, 'oo')
-            print(tui_food, 'tt')
-            print(redis_data)
+            # print(origin_food, 'oo')
+            # print(tui_food, 'tt')
+            # print(redis_data)
             for f in tui_food:
                 if f in origin_food and f in redis_data:
                     pass
@@ -70,14 +73,14 @@ class MenuStatus(web.RequestHandler):
             if result == '退点成功':
                 for f in tui_food:
                     origin_food.remove(f)
-                    redis_connect.lpop(f)
+                    redis_connect.lrem(table, 1, f)
                 tui_str = ','.join(tui_food)+','
                 origin_str = ','.join(origin_food)+','
                 menu.update(food=origin_str, tui_food=tui_str)
             data = {'msg': result}
-            print(origin_food, 'oo')
-            print(tui_food, 'tt')
-            print(redis_connect.lrange(table, 0, -1))
+            # print(origin_food, 'oo')
+            # print(tui_food, 'tt')
+            # print(redis_connect.lrange(table, 0, -1))
             self.write(escape.json_encode(data))
 
 
