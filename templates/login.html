@@ -14,17 +14,6 @@
 
 
 <script>
-    function objToString (obj) {
-    var str = '';
-    for (var p in obj) {
-        if (obj.hasOwnProperty(p)) {
-            str += p + '::' + obj[p] + '\n';
-        }
-    }
-    return str;
-}
-</script>
-<script>
  $("#bt").click(function(){
     data={
     "account": $("#account").val(),
@@ -36,11 +25,10 @@
         data : JSON.stringify(data),
         url : '/',
         success : function(msg){
-            alert(msg);
+            window.location=msg['msg'];
         },
         error : function(msg) {
-        var p =objToString(msg);
-            location.href=p;
+        window.location=msg['msg'];
         }
     });
 
