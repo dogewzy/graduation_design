@@ -8,11 +8,11 @@ import uuid
 
 class ChefHandler(web.RequestHandler):
     def get(self, *args, **kwargs):
-        all_menu = []
+        unfinish = []
         for i in redis_connect.smembers('table_num'):
-            all_menu.append(i.decode('utf-8'))
+            unfinish.append(i.decode('utf-8'))
         table_status = {}
-        for i in all_menu:
+        for i in unfinish:
             # not finish food
             table_status[i] = [food.decode('utf-8') for food in redis_connect.lrange(i, 0, -1)]
         self.render('chef.html', t=table_status)
@@ -25,4 +25,5 @@ class ChefHandler(web.RequestHandler):
             food_list = response['food'].split(',')[0:-1]
             for i in food_list:
                 redis_connect.lrem(table, 1, i)
+                redis_connect.lpush(str(int(table)+3000), i)
         self.write('success')

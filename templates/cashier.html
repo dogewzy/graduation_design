@@ -7,21 +7,57 @@
 <div class="container">
   <h2>收银系统</h2>
   <div class="panel-group">
-    <div class="panel panel-default">
-      <div class="panel-heading">客人签到,获取随机桌号</div>
+    <div class="panel panel-primary">
+      <div class="panel-heading">客人签到 结账 </div>
       <div class="panel-body">
-          <button type="button" class="btn btn-info" id="table_num"></button>
+            <p>空余桌位详情</p>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>桌号</th>
+                  <th>状态</th>
+                  <th>客人上桌</th>
+                  <th>结账</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for table in all %}
+
+                {% if table in num %}
+                <tr class="info">
+                  <td>{{ table }}</td>
+                  <td>空闲</td>
+                  <td><button class="to_be_add">点击上桌</button></td>
+                  <td></td>
+                </tr>
+                {% else %}
+                <tr class="danger">
+                  <td>{{ table }}</td>
+                  <td>有客</td>
+                  <td></td>
+                  <td><button class="to_be">点击结账</button></td>
+                </tr>
+
+                {% end %}
+                {% end %}
+
+
+
+              </tbody>
+            </table>
+
+
       </div>
     </div>
 
     <div class="panel panel-primary">
-      <div class="panel-heading">客人结账</div>
+      <div class="panel-heading">排队客人叫号</div>
 
-      <div class="panel-body">
-          <label>需要结账的桌号</label>
-          <input type="text" id="to_be_add">
-      </div>
-        <button id="to_be">结账</button>
+      <!--<div class="panel-body">-->
+          <!--<label>需要结账的桌号</label>-->
+          <!--<input type="text" id="to_be_add">-->
+      <!--</div>-->
+        <!--<button id="to_be">结账</button>-->
     </div>
     </div>
 </div>
@@ -29,10 +65,12 @@
 
 
 <script>
-$("#table_num").click(function(){
+var o ={{ all }};
+var p = {{ num }};
+$(".to_be_add").click(function(){
     data={
     "action":"get_num",
-
+    "num":$(event.target).parent().prev().prev().html()
     },
   $.ajax({
         type : "post",
@@ -40,16 +78,19 @@ $("#table_num").click(function(){
         data : JSON.stringify(data),
         url : '/cashier',
         success : function(msg){
-alert(msg['msg'])
+alert('请客人去'+msg['msg']+'号桌用餐');
+location.reload();
         },
         error : function() {
-alert(msg['msg'])
+alert(msg['msg'],'发生错误')
         }
     });
 });
 
-$("#to_be").click(function(){
-    data={"action":"to_be_finish",    "table":$("#to_be_add").val()},
+$(".to_be").click(function(){
+    data={"action":"to_be_finish",
+      "table":$(event.target).parent().prev().prev().prev().html()
+      },
   $.ajax({
         type : "post",
         dataType : "json",
@@ -57,6 +98,7 @@ $("#to_be").click(function(){
         url : '/cashier',
         success : function(msg){
            alert(msg['msg']);
+           location.reload();
         },
         error : function(msg) {
         alert(msg['msg']);

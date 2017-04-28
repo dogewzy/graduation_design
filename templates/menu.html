@@ -1,18 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Menu</title>
-    <script src="http://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>
-</head>
+{% extends "base.html" %}
+
+{% block normal %}
 <body>
 <span>桌号</span><input type="text" name="桌号" id="table">
-<ul>
-{% for food in items %}
-<li><input type="checkbox" id="food"><span>{{ food }}</span></li>
-{% end %}
-</ul>
-<input type="submit" id="submit" value="下单">
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-sm-4" style="background-color:lavender;">
+        <h3>热门推荐</h3>
+        <ul>
+        {% for food in items[0:4] %}
+        <li><input type="checkbox" id="food"><span>{{ food }}</span></li>
+        {% end %}
+        </ul>
+    </div>
+    <div class="col-sm-4" style="background-color:lavenderblush;">
+        <h3>江南美食</h3>
+         <ul>
+        {% for food in items[5:9] %}
+        <li><input type="checkbox" id="food1"><span>{{ food }}</span></li>
+        {% end %}
+        </ul>
+    </div>
+    <div class="col-sm-4" style="background-color:lavender;">
+        <h3>塞北风味</h3>
+        <ul>
+        {% for food in items[10:14] %}
+        <li><input type="checkbox" id="food2"><span>{{ food }}</span></li>
+        {% end %}
+        </ul>
+    </div>
+      <div class="col-sm-4" style="background-color:lavenderblush;">
+        <h3>潮汕味道</h3>
+        <ul>
+        {% for food in items[14:18] %}
+        <li><input type="checkbox" id="food3"><span>{{ food }}</span></li>
+        {% end %}
+        </ul>
+         </div>
+      <div class="col-sm-4" style="background-color:lavender;">
+        <h3>美味干锅</h3>
+        <ul>
+        {% for food in items[18:22] %}
+        <li><input type="checkbox" id="food3"><span>{{ food }}</span></li>
+        {% end %}
+        </ul>
+         </div>
+      <div class="col-sm-4" style="background-color:lavenderblush;">
+        <h3>健康蔬果</h3>
+        <ul>
+        {% for food in items[22:26] %}
+        <li><input type="checkbox" id="food3"><span>{{ food }}</span></li>
+        {% end %}
+        </ul>
+         </div>
+      <div class="col-sm-4" style="background-color:lavender;">
+        <h3>营养煲汤</h3>
+        <ul>
+        {% for food in items[26:30] %}
+        <li><input type="checkbox" id="food3"><span>{{ food }}</span></li>
+        {% end %}
+        </ul>
+         </div>
+      <div class="col-sm-4" style="background-color:lavenderblush;">
+        <h3>主食汤面</h3>
+        <ul>
+        {% for food in items[30:34] %}
+        <li><input type="checkbox" id="food3"><span>{{ food }}</span></li>
+        {% end %}
+        </ul>
+         </div>
+      <div class="col-sm-4" style="background-color:lavender;">
+        <h3>酒水饮料</h3>
+        <ul>
+        {% for food in items[34:38] %}
+        <li><input type="checkbox" id="food3"><span>{{ food }}</span></li>
+        {% end %}
+        </ul>
+         </div>
+  </div>
+</div>
+<input type="submit" id="submit" value="下单" class="ssss">
 
 
 
@@ -51,5 +119,13 @@ $(document).ready(function(){
 
 });
 </script>
+
 </body>
-</html>
+
+<style>
+.food1{ float: left; width: 33%; }
+.food2{ float: right; width: 33%; }
+.food3{ display: inline-block; width: 33%; }
+.ssss{margin-left:auto;margin-right:auto;}
+</style>
+{% end %}
