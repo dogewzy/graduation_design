@@ -17,7 +17,11 @@
     {% for food in food_status %}
       <tr>
         <td>{{ food }}</td>
-        <td>{{ food_status[food] }}</td>
+          {% if food_status[food]=='已完成' %}
+             <td bgcolor="CornflowerBlue">{{ food_status[food] }}</td>
+          {% else %}
+          <td bgcolor="LightSkyBlue">{{ food_status[food] }}</td>
+          {% end %}
       </tr>
      {% end %}
     </tbody>

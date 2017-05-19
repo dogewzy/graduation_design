@@ -22,7 +22,11 @@ class ChefHandler(web.RequestHandler):
         print(response)
         if response['action'] == 'update_food':
             table = response['table']
-            food_list = response['food'].split(',')[0:-1]
+            if ',' in table > 1:
+                food_list = response['food'].split(',')[0:-1]
+            else:
+                # single update
+                food_list = response['food'].split(',')[0:1]
             for i in food_list:
                 redis_connect.lrem(table, 1, i)
                 redis_connect.lpush(str(int(table)+3000), i)

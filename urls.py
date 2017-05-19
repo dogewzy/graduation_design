@@ -9,4 +9,7 @@ url_patterns = [
     (r"/cashier", AllocationHandler),
     (r"/admin", AdminHandler),
     (r"/chef", ChefHandler),
+    (r"/announcement", AnnouncementHandler),
+    (r"/data", DataHandler),
+    (r"/culture", CultureHandler),
 ]

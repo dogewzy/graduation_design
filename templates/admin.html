@@ -20,7 +20,7 @@
     <tbody>
     {% for foo in food %}
       <tr>
-        <td>{{ foo.name }}</td>
+        <td><span class="glyphicon glyphicon-leaf"></span>{{ foo.name }}</td>
         <td>{{ foo.price }}</td>
         <td><label>新价格</label><input type="text"><button class="update_food">修改价格</button></td>
           <td><button class="delete_food">删除</button></td>
@@ -62,6 +62,7 @@
           <table class="table">
     <thead>
       <tr>
+
         <th>姓名</th>
         <th>职位</th>
         <th>账号</th>
@@ -72,7 +73,8 @@
     <tbody>
     {% for p in people %}
       <tr>
-        <td>{{ p.name }}</td>
+
+        <td><span class="glyphicon glyphicon-user"></span>{{ p.name }}</td>
         <td>{{ p.role }}</td>
         <td>{{ p.account }}</td>
           <td>{{ p.password }}</td>

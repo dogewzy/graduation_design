@@ -42,3 +42,18 @@ class AdminHandler(web.RequestHandler):
             print(p)
             p.delete()
 
+
+class DataHandler(web.RequestHandler):
+    def get(self, *args, **kwargs):
+        self.render('data.html')
+
+
+class AnnouncementHandler(web.RequestHandler):
+    def get(self, *args, **kwargs):
+        self.render('announcement.html')
+
+
+class CultureHandler(web.RequestHandler):
+    def get(self, *args, **kwargs):
+        self.render('culture.html')
+
